@@ -78,7 +78,11 @@ class LViewData():
         
         
         lview_array = images[:, idx1, idx2].astype(np.uint8, order='C', casting='unsafe')
+        lview_array = lview_array[:,:,0]
+        print(f"shape=", lview_array.shape) #(951, 512, 3)
         lview_array = np.transpose(lview_array, (1, 0)).copy()
+
+        print(f"shape2=", lview_array.shape) #(951, 512, 3)
         if 135 <= self.current_angle <= 315:
             lview_array = np.flipud(lview_array).copy()
 
@@ -556,9 +560,10 @@ class Master(QMainWindow):
         Reads the dicom images and metadata. Places metatdata in a table.
         Images are displayed in the graphics scene.
         """
-
+        fileName=r"/media/eton/hdd931g/42-workspace4debian/70-DICOMs/dicom-series-005-MainSeries_Pre_LCX_RUN5(1-920).dcm"
         if fileName:
             try :
+                print(f"fileName={fileName}")
                 self.dicom = dcm.read_file(fileName, force=True)
                 self.images = self.dicom.pixel_array
             except:
